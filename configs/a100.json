@@ -1,0 +1,17 @@
+{
+  "seed": 42,
+  "workers": 4,
+  "max_minutes": 115,
+  "trial_seconds": 2000,
+  "experiments": [
+    {"name": "assignment", "augmentation": "assignment", "batch_size": 128,
+     "lr": 0.001, "eps": 0.1, "weight_decay": 0.0, "epochs": 200,
+     "patience": 20, "cosine": false, "precision": "fp32"},
+    {"name": "mild", "augmentation": "mild", "batch_size": 256,
+     "lr": 0.001, "eps": 1e-8, "weight_decay": 0.0001, "epochs": 80,
+     "patience": 15, "cosine": true, "precision": "bf16"},
+    {"name": "moderate", "augmentation": "moderate", "batch_size": 256,
+     "lr": 0.001, "eps": 1e-8, "weight_decay": 0.0001, "epochs": 80,
+     "patience": 15, "cosine": true, "precision": "bf16"}
+  ]
+}
