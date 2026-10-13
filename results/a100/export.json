@@ -1,0 +1,37 @@
+{
+  "selected_recipe": "moderate",
+  "manifest_sha256": "f6eddc73eeff2d724b882fdeba8ac0c1b4b9c3e00a3b58da0a2f873f35674fd7",
+  "architecture": "Assignment 5 Net",
+  "parameters": 151403,
+  "evaluation_precision": "fp32",
+  "single_seed": true,
+  "recipes": [
+    "assignment",
+    "moderate"
+  ],
+  "versions": {
+    "python": "3.12.8",
+    "torch": "2.8.0+cu126",
+    "torchvision": "0.23.0+cu126",
+    "numpy": "2.2.6",
+    "cuda_runtime": "12.6"
+  },
+  "source_revision": "667458fde169bf4b8a5bd9e06e355dd7b1c13c0c",
+  "source_was_dirty": true,
+  "hardware": {
+    "gpu_memory_bytes": 42430300160,
+    "gpu": "NVIDIA A100"
+  },
+  "sha256": {
+    "assignment/config.json": "227cbbebeec1477606a383b8a5056b33477fe63b4846657630ab9f27a1098689",
+    "assignment/history.json": "3d08eb41b47fe4066d0df93f987a55aff0c22b5ce77f216c046a23b57e762812",
+    "assignment/metrics.json": "a7db51abfec474c2e3d898815f4d2af22892805fdaefd1a5eff8472a4e21f59d",
+    "assignment/summary.json": "fa2edbf7cd0840bc061aa50e924994ac7f945675bce8adfe519f3fc9eb11b486",
+    "assignment/weights.pt": "086697dc4eb780e95e9eceabfff2dd1ba8d6593608d311ab4f0aed92868d3110",
+    "moderate/config.json": "ce91de0d9d22f5a92217f903702643ed608106f81f54bf78afcc3d224bb01671",
+    "moderate/history.json": "c83280e6acd61385401d5b5a6f32b2942e7f27b3d6abdecaece205170db096c6",
+    "moderate/metrics.json": "7850277380c3e742c89a423ab6e0402702575a189e0d39c799a1f7fd31ae5ed0",
+    "moderate/summary.json": "3908d04ef96db5b429b2a6b0ab2188bf1a6a5ac2deb329cbf7817b2ded75f1ef",
+    "moderate/weights.pt": "572eae6e264ce67b2b948a8ed62cea76021ee90846daee3802cc73225042923a"
+  }
+}

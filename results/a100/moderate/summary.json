@@ -1,0 +1,7 @@
+{
+  "best_val_accuracy": 0.9745849297573436,
+  "epochs_completed": 68,
+  "elapsed_seconds": 399.1764563601464,
+  "peak_gpu_memory_bytes": 176488960,
+  "stop_reason": "early_stopping"
+}

@@ -1,0 +1,13 @@
+{
+  "batch_size": 128,
+  "lr": 0.001,
+  "eps": 0.1,
+  "weight_decay": 0.0,
+  "epochs": 200,
+  "patience": 20,
+  "seed": 42,
+  "augmentation": "assignment",
+  "precision": "fp32",
+  "actual_precision": "fp32",
+  "cosine": false
+}
