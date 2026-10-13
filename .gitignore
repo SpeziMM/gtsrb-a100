@@ -1,9 +1,47 @@
-.venv/
-.venv-python-old/
+# Environments, including backups created on the cluster.
+.venv*/
+venv/
+env/
+.conda/
 __pycache__/
 *.pyc
+# Private credentials and local sessions.
+.env
+.env.*
+*.env
+.envrc
+.ssh/
+.aws/
+.azure/
+.codex/
+.netrc
+.npmrc
+.pypirc
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+id_rsa*
+id_ed25519*
+credentials*.json
+secrets*.json
+session*.json
+.bash_history
+.python_history
+# Raw data and outputs stay local. Publish through export_results.py.
 data/
 runs/
 dist/
 wheelhouse/
+*.log
+*.pt
+*.pth
+*.ckpt
+*.pkl
+*.pickle
+*.npy
+*.npz
+# Only the exporter's weights-only artifact is intended for Git.
+!results/**/weights.pt
 .DS_Store

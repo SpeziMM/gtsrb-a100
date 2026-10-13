@@ -160,3 +160,38 @@ Resizing is fixed and does not learn from data. Pixel conversion is `/255`; no n
 ## Files
 
 `configs/a100.json` controls the run. `gtsrb/model.py` defines the fixed model; `data.py` prepares/verifies data; `engine.py` trains and evaluates; `run.py` coordinates the experiment. `docs/research.md` records sources and the reviewed data-science skill. Raw data, environments and outputs are ignored by Git.
+
+## Recover an accidental local environment commit
+
+If your last **unpushed** commit includes `.venv-old-*`, undo that commit while preserving its files, then bring in the corrected ignore rules:
+
+```bash
+git reset --mixed HEAD~1
+git pull --rebase --autostash origin codex/a100
+git config user.name "SpeziMM"
+git config user.email "42320336+SpeziMM@users.noreply.github.com"
+.venv/bin/python scripts/audit_repository.py --history
+git status --short
+```
+
+`reset --mixed` preserves the working files, including datasets and completed runs. Pulling with `--autostash` temporarily saves and reapplies tracked edits. If Git reports a conflict, resolve it before proceeding. These commands assume the unwanted commit is the last local commit and has not been pushed; they do not rewrite published history. Check with `git log --oneline origin/codex/a100..HEAD` before undoing a commit if unsure.
+
+`.gitignore` now covers all `.venv*` directories, common credential/key/session files, raw run folders, logs and full checkpoints. Ignore rules do not remove files already present in commits or in the index; undoing the accidental commit is the required cleanup step.
+
+## Publish model weights and benchmark results
+
+After a complete benchmark, generate a new export directory. The exporter includes only the baseline/selected model state dictionaries, numeric metrics, histories, training settings, version metadata, source revision and checksums. It excludes optimizer state, arbitrary extra fields, raw environment logs, dependency URLs, session state and absolute run paths.
+
+```bash
+.venv/bin/python scripts/export_results.py --run runs/a100 --output results/a100
+git add -- results/a100
+.venv/bin/python scripts/audit_repository.py --history
+git diff --cached --stat
+git commit --only -m "Add A100 model and benchmark results" -- results/a100
+git pull --rebase --autostash origin codex/a100
+git push origin HEAD:codex/a100
+```
+
+Use a different export folder for another completed run; the exporter refuses to overwrite an existing directory. The raw `runs/a100/` folder remains available locally for checkpoint recovery. Public `weights.pt` files contain only tensors matching the fixed `Net` architecture. To load one, use `Net().load_state_dict(torch.load(path, map_location="cpu", weights_only=True))`.
+
+The audit inspects staged files and, with `--history`, current-branch ancestry for environment/private paths and common secret patterns. It reports only filenames and rule names, never matching values. It is a targeted check, not proof that every possible secret format is absent. Avoid `git add .` for publishing results; stage the generated export directory explicitly.
