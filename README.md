@@ -6,26 +6,58 @@ The default run compares the assignment recipe with two modest augmentation/trai
 
 ## Quick start
 
-Prepare the environment and data **before reserving GPU time**, on a node where installation/downloads are allowed. Use Python 3.12 on Linux x86_64 (the pinned PyTorch wheels require a sufficiently recent Linux distribution, glibc 2.28+).
+Prepare the environment and data **before reserving GPU time**, on a node where installation/downloads are allowed. Use Python 3.12 on Linux x86_64 (supported Python versions: 3.10–3.13; the pinned PyTorch wheels require glibc 2.28+). The setup script checks the version before creating an environment and searches for a supported installed interpreter.
 
 ```bash
 git clone https://github.com/SpeziMM/gtsrb-a100.git
 cd gtsrb-a100
 bash scripts/setup.sh
 source .venv/bin/activate
-python -m gtsrb.data --download
+.venv/bin/python -m gtsrb.data --download
 ```
 
 Inside your course's allocated A100 session:
 
 ```bash
 source .venv/bin/activate
-python run.py
+.venv/bin/python run.py
 ```
 
 The output is **`runs/a100/report.md`**, with validation curves, checkpoints, raw metrics, confusion matrices, per-class scores and environment details. The launcher uses the GPU exposed as CUDA device 0; follow the course's allocation rules or set `CUDA_VISIBLE_DEVICES` to the device assigned to you. It does not reserve a GPU or assume a scheduler/partition name.
 
 **No A100 accuracy or speed result is claimed yet.** Local CPU verification exercises the pipeline; your cluster run produces the actual benchmark.
+
+### If the cluster uses Python 3.6
+
+An error pointing at `while chunk := ...` means the command ran with Python older than 3.8. The project's pinned dependencies need Python 3.10–3.13, so changing that line alone will not make a Python 3.6 environment usable. Updating pip also cannot change the Python interpreter inside an existing virtual environment.
+
+Check available versions on the course machine:
+
+```bash
+python3 --version
+module avail python
+```
+
+Load a listed Python 3.10, 3.11, 3.12 or 3.13 module using its exact displayed name. Module names vary; the course guide does not establish a specific modern Python module. If `python3.12` is already installed, select it directly:
+
+```bash
+PYTHON_BIN=python3.12 bash scripts/setup.sh --check
+PYTHON_BIN=python3.12 bash scripts/setup.sh
+.venv/bin/python -m gtsrb.data --download
+```
+
+If the previous `.venv/bin/python --version` reports Python 3.6, rename that environment first with `mv .venv .venv-python-old` (choose another backup name if it exists), then rerun setup. This leaves the prepared `data/` directory in place.
+
+Where Conda is available, another option is:
+
+```bash
+conda create -n gtsrb-python python=3.12 pip -y
+conda activate gtsrb-python
+bash scripts/setup.sh
+.venv/bin/python -m gtsrb.data --download
+```
+
+If there is no modern Python module, installed interpreter or Conda, collect `module avail python`, `command -v conda`, and `getconf GNU_LIBC_VERSION` to choose a compatible installation method. No admin access is needed for the module/Conda options above. Dependencies and Python must be provisioned before an offline run.
 
 ## If the cluster cannot download data
 

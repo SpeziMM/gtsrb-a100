@@ -2,9 +2,11 @@
 # Run on an internet-connected Linux x86_64 host with the cluster's Python version.
 set -euo pipefail
 cd "$(dirname "$0")/.."
-python3 -m pip download --only-binary=:all: --dest wheelhouse \
+source scripts/python.sh
+select_project_python
+"$PYTHON_BIN" -m pip download --only-binary=:all: --dest wheelhouse \
   --extra-index-url https://download.pytorch.org/whl/cu126 -r requirements.txt
-python3 - <<'PY'
+"$PYTHON_BIN" - <<'PY'
 import hashlib
 from pathlib import Path
 root = Path('wheelhouse')

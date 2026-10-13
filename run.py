@@ -6,6 +6,8 @@ import subprocess
 import sys
 import time
 
+from gtsrb import require_supported_python
+
 
 def supervise(command, seconds=7140):
     env = dict(os.environ, GTSRB_HARD_DEADLINE=str(time.time()+seconds))
@@ -24,5 +26,6 @@ def supervise(command, seconds=7140):
 
 
 if __name__ == "__main__":
+    require_supported_python()
     os.chdir(Path(__file__).resolve().parent)
     raise SystemExit(supervise([sys.executable, "-u", "-m", "gtsrb.run", *sys.argv[1:]]))
