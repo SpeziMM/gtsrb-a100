@@ -10,7 +10,8 @@ PATTERNS = {
     "GitHub token": re.compile(rb"(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{30,})"),
     "AWS access key": re.compile(rb"(?:AKIA|ASIA)[A-Z0-9]{16}"),
     "credential in URL": re.compile(rb"https?://[^/\s:@]+:[^/\s@]+@"),
-    "assigned secret": re.compile(rb"(?i)(?:api[_-]?key|access[_-]?token|client[_-]?secret|session[_-]?key|password)\s*[:=]\s*[\"']?[A-Za-z0-9/+_=.-]{16,}"),
+    "assigned secret": re.compile(rb"(?i)(?:api[_-]?key|access[_-]?token|client[_-]?secret|session[_-]?key|password)[\"']?\s*[:=]\s*[\"']?[A-Za-z0-9/+_=.-]{16,}"),
+    "JWT session token": re.compile(rb"eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}"),
 }
 
 
@@ -18,13 +19,13 @@ def private_path(name):
     parts = PurePosixPath(name).parts
     for part in parts:
         lower = part.lower()
-        if (lower.startswith(".venv") or lower in ("venv", "env", ".conda", ".ssh", ".aws", ".azure", ".codex", ".netrc", ".npmrc", ".pypirc", ".envrc")
+        if (lower.startswith(".venv") or lower in ("venv", "env", ".conda", ".ssh", ".aws", ".azure", ".codex", ".config", ".cache", ".git-credentials", ".netrc", ".npmrc", ".pypirc", ".envrc")
                 or lower == ".env" or lower.startswith(".env.")
                 or lower.startswith(("id_rsa", "id_ed25519"))):
             return True
     suffix = PurePosixPath(name).suffix.lower()
     base = parts[-1].lower()
-    return suffix in (".env", ".pem", ".key", ".p12", ".pfx", ".jks") or (
+    return suffix in (".env", ".pem", ".key", ".p12", ".pfx", ".jks", ".token") or (
         base.startswith(("credentials", "secrets", "session")) and suffix == ".json")
 
 
